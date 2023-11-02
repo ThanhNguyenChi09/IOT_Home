@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>
+    <%=dashboardTitle%>
+  </title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Sharp" rel="stylesheet" />
+  <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <aside>
+      <div class="top">
+        <div class="logo">
+          <img src="images/Logo_name.png" alt="" />
+          <h2>Thanh's IOT HOME</h2>
+        </div>
+        <div class="close" id="close-btn">
+          <span class="material-symbols-sharp"> close </span>
+        </div>
+      </div>
+      <div class="sidebar">
+        <a href="/room1" class="inactive">
+          <span class="material-symbols-sharp"> dashboard </span>
+          <h3>ROOM 101</h3>
+        </a>
+        <a href="#" class="active">
+          <span class="material-symbols-sharp"> dashboard </span>
+          <h3>ROOM 102</h3>
+        </a>
+      </div>
+    </aside>
+    <main>
+      <h1>
+        <%=dashboardTitle%>
+      </h1>
+      <div class="connection-status">
+        <h3>Connection Status: <span class="status">Disconnected</span></h3>
+      </div>
+      <div class="insights">
+        <div class="temperature">
+          <div class="middle">
+            <div class="left">
+              <h3>Temperature</h3>
+              <h1 id="temperature2"></h1>
+            </div>
+            <div class="icon">
+              <span class="material-symbols-sharp"> device_thermostat </span>
+            </div>
+          </div>
+        </div>
+        <!-- End of temperature -->
+        <div class="humidity">
+          <div class="middle">
+            <div class="left">
+              <h3>Humidity</h3>
+              <h1 id="humidity2"></h1>
+            </div>
+            <div class="icon">
+              <span class="material-symbols-sharp">
+                humidity_percentage
+              </span>
+            </div>
+          </div>
+        </div>
+        <!-- End of humidity -->
+        <div class="light">
+          <div class="middle">
+            <div class="left">
+              <h3>Light Intensity</h3>
+              <h1 id="light2"></h1>
+            </div>
+            <div class="icon">
+              <span class="material-symbols-sharp"> light_mode </span>
+            </div>
+          </div>
+        </div>
+        <!-- End of light -->
+
+        <div class="lightSwitch21">
+          <div class="middle">
+            <div class="left">
+              <h3>Light Switch 2/1</h3>
+              <h1 id="lightSwitch21"></h1>
+            </div>
+            <div class="icon">
+              <input type="checkbox" id="bulb21">
+              <label for="bulb21" class="material-symbols-sharp" style="cursor: pointer;"> emoji_objects </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="lightSwitch22">
+          <div class="middle">
+            <div class="left">
+              <h3>Light Switch 2/2</h3>
+              <h1 id="lightSwitch22"></h1>
+            </div>
+            <div class="icon">
+              <input type="checkbox" id="bulb22">
+              <label for="bulb22" class="material-symbols-sharp" style="cursor: pointer;"> emoji_objects </label>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="fanSwitch2">
+          <div class="middle">
+            <div class="left">
+              <h3>Fan Switch</h3>
+              <h1 id="fanSwitch2"></h1>
+            </div>
+            <div class="icon">
+              <input type="checkbox" id="fan2">
+              <label for="fan2" class="material-symbols-sharp" style="cursor: pointer;"> mode_fan </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- End of Insights -->
+      <div class="histories">
+        <h2>Historical Charts</h2>
+        <div class="history-charts">
+          <div id="temperature-history2" class="history-divs"></div>
+          <div id="humidity-history2" class="history-divs"></div>
+          <div id="light-history2" class="history-divs"></div>
+        </div>
+      </div>
+    </main>
+    <div class="right">
+      <div class="top">
+        <button id="menu-btn">
+          <span class="material-symbols-sharp"> menu </span>
+        </button>
+        <div class="theme-toggler">
+          <span class="material-symbols-sharp active"> light_mode </span>
+          <span class="material-symbols-sharp"> dark_mode </span>
+        </div>
+      </div>
+      <!-- End of top -->
+      <div class="gauge-charts">
+        <h2>Gauge Charts</h2>
+        <div class="item">
+          <div id="temperature-gauge2"></div>
+        </div>
+        <div class="item">
+          <div id="humidity-gauge2"></div>
+        </div>
+        <div class="item">
+          <div id="light-gauge2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="./index2.js"></script>
+  <script type="module" src="./mqttService.js"></script>
+</body>
+
+</html>
