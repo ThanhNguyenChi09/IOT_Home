@@ -328,8 +328,6 @@ function updateSensorReadings(jsonResponse, obj) {
     obj.light1 = Number(jsonResponse.value).toFixed(2);
   }
 
-
-
   updateBoxes(obj.temperature1, obj.humidity1, obj.light1);
 
   updateGauge(obj.temperature1, obj.humidity1, obj.light1);
@@ -369,6 +367,7 @@ function updateBoxes(temperature1, humidity1, light1) {
   lightDiv.innerHTML = light1 + " Lux";
 
 }
+
 
 function updateGauge(temperature1, humidity1, light1) {
   var temperature_update = {
@@ -533,6 +532,18 @@ function initializeMQTTConnection(mqttServer, mqttTopic) {
 const bulb11 = document.getElementById("bulb11");
 const lightSwitch11 = document.getElementById("lightSwitch11");
 lightSwitch11.innerText = "OFF";
+
+// // Function to update the light status
+// function updateLightStatus(value) {
+//   if (value === 1) {
+//     lightSwitch11.innerText = "ON";
+//     bulb11.checked = true;
+//   } else {
+//     lightSwitch11.innerText = "OFF";
+//     bulb11.checked = false;
+//   }
+// }
+
 bulb11.addEventListener("change", function () {
   if (this.checked) {
     // Nếu công tắc được bật
@@ -544,6 +555,18 @@ bulb11.addEventListener("change", function () {
     mqttService.publish("device/light11", '0');
   }
 });
+
+// // MQTT message handler
+// mqttService.onMessage(function (topic, payload) {
+//   if (topic === "device/light11") {
+//     const message = JSON.parse(payload);
+
+//     // Check if the received message is for Light11
+//     if (message.device_id === "ROOM101" && message.type === "Light11") {
+//       updateLightStatus(message.value);
+//     }
+//   }
+// });
 
 //Light 12
 const bulb12 = document.getElementById("bulb12");
@@ -574,6 +597,20 @@ fan1.addEventListener("change", function () {
     // Nếu công tắc được tắt
     fanSwitch1.innerText = "OFF";
     mqttService.publish("device/fan1", '0')
+  }
+});
+
+//Mode Switch
+const ModeSwitch1 = document.getElementById("ModeSwitch1");
+const ModeSwitch = document.getElementById("ModeSwitch");
+ModeSwitch1.innerText = "Manual";
+ModeSwitch.addEventListener("change", function () {
+  if (this.checked) {
+    // Nếu công tắc được bật
+    ModeSwitch1.innerText = "Auto";
+  } else {
+    // Nếu công tắc được tắt
+    ModeSwitch1.innerText = "Manual";
   }
 });
 

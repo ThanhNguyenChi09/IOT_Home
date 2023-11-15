@@ -512,13 +512,15 @@ function fetchMQTTConnection() {
     })
     .catch((error) => console.error("Error getting MQTT Connection :", error));
 }
+
+var mqttService;
 function initializeMQTTConnection(mqttServer, mqttTopic) {
   console.log(
     `Initializing connection to :: ${mqttServer}, topic :: ${mqttTopic}`
   );
   var fnCallbacks = { onConnect, onMessage, onError, onClose };
 
-  var mqttService = new MQTTService(mqttServer, fnCallbacks);
+  mqttService = new MQTTService(mqttServer, fnCallbacks);
   mqttService.connect();
 
   mqttService.subscribe(mqttTopic);
@@ -532,9 +534,11 @@ bulb21.addEventListener("change", function () {
   if (this.checked) {
     // Nếu công tắc được bật
     lightSwitch21.innerText = "ON";
+    mqttService.publish("device/light21", '1');
   } else {
     // Nếu công tắc được tắt
     lightSwitch21.innerText = "OFF";
+    mqttService.publish("device/light21", '0');
   }
 });
 
@@ -546,9 +550,11 @@ bulb22.addEventListener("change", function () {
   if (this.checked) {
     // Nếu công tắc được bật
     lightSwitch22.innerText = "ON";
+    mqttService.publish("device/light22", '1');
   } else {
     // Nếu công tắc được tắt
     lightSwitch22.innerText = "OFF";
+    mqttService.publish("device/light22", '0');
   }
 });
 
@@ -560,8 +566,10 @@ fan2.addEventListener("change", function () {
   if (this.checked) {
     // Nếu công tắc được bật
     fanSwitch2.innerText = "ON";
+    mqttService.publish("device/fan2", '1');
   } else {
     // Nếu công tắc được tắt
     fanSwitch2.innerText = "OFF";
+    mqttService.publish("device/fan2", '0');
   }
 });

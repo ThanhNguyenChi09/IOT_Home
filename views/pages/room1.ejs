@@ -57,6 +57,7 @@
           </div>
         </div>
         <!-- End of temperature -->
+
         <div class="humidity">
           <div class="middle">
             <div class="left">
@@ -71,6 +72,7 @@
           </div>
         </div>
         <!-- End of humidity -->
+
         <div class="light">
           <div class="middle">
             <div class="left">
@@ -111,7 +113,6 @@
         </div>
 
 
-
         <div class="fanSwitch1">
           <div class="middle">
             <div class="left">
@@ -124,42 +125,56 @@
             </div>
           </div>
         </div>
-      </div>
-      
-      <!-- End of Insights -->
-      <div class="histories">
-        <h2>Historical Charts</h2>
-        <div class="history-charts">
-          <div id="temperature-history1" class="history-divs"></div>
-          <div id="humidity-history1" class="history-divs"></div>
-          <div id="light-history1" class="history-divs"></div>
+      <!-- </div> -->
+
+      <div class="ModeSwitch1">
+        <div class="middle">
+          <div class="left">
+            <h3>Mode Switch</h3>
+            <h1 id="ModeSwitch1"></h1>
+          </div>
+          <div class="icon">
+            <input type="checkbox" id="ModeSwitch">
+            <label for="ModeSwitch" class="material-symbols-sharp" style="cursor: pointer;"> Settings </label>
+          </div>
         </div>
       </div>
-    </main>
-    <div class="right">
-      <div class="top">
-        <button id="menu-btn">
-          <span class="material-symbols-sharp"> menu </span>
-        </button>
-        <div class="theme-toggler">
-          <span class="material-symbols-sharp active"> light_mode </span>
-          <span class="material-symbols-sharp"> dark_mode </span>
-        </div>
-      </div>
-      <!-- End of top -->
-      <div class="gauge-charts">
-        <h2>Gauge Charts</h2>
-        <div class="item">
-          <div id="temperature-gauge1"></div>
-        </div>
-        <div class="item">
-          <div id="humidity-gauge1"></div>
-        </div>
-        <div class="item">
-          <div id="light-gauge1"></div>
-        </div>
+  </div>
+
+  <!-- End of Insights -->
+  <div class="histories">
+    <h2>Historical Charts</h2>
+    <div class="history-charts">
+      <div id="temperature-history1" class="history-divs"></div>
+      <div id="humidity-history1" class="history-divs"></div>
+      <div id="light-history1" class="history-divs"></div>
+    </div>
+  </div>
+  </main>
+  <div class="right">
+    <div class="top">
+      <button id="menu-btn">
+        <span class="material-symbols-sharp"> menu </span>
+      </button>
+      <div class="theme-toggler">
+        <span class="material-symbols-sharp active"> light_mode </span>
+        <span class="material-symbols-sharp"> dark_mode </span>
       </div>
     </div>
+    <!-- End of top -->
+    <div class="gauge-charts">
+      <h2>Gauge Charts</h2>
+      <div class="item">
+        <div id="temperature-gauge1"></div>
+      </div>
+      <div class="item">
+        <div id="humidity-gauge1"></div>
+      </div>
+      <div class="item">
+        <div id="light-gauge1"></div>
+      </div>
+    </div>
+  </div>
   </div>
   <script type="module" src="./index1.js"></script>
   <script type="module" src="./mqttService.js"></script>
