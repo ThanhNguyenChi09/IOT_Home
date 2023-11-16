@@ -327,8 +327,17 @@ function updateSensorReadings(jsonResponse, obj) {
   if (jsonResponse.type == "Light_Intensity") {
     obj.light1 = Number(jsonResponse.value).toFixed(2);
   }
+  if (jsonResponse.type == "Light11") {
+    obj.button1 = Number(jsonResponse.value);
+  }
+  if (jsonResponse.type == "Light12") {
+    obj.button2 = Number(jsonResponse.value);
+  }
+  if (jsonResponse.type == "Fan1") {
+    obj.button3 = Number(jsonResponse.value);
+  }
 
-  updateBoxes(obj.temperature1, obj.humidity1, obj.light1);
+  updateBoxes(obj.temperature1, obj.humidity1, obj.light1, obj.button1, obj.button2, obj. button3);
 
   updateGauge(obj.temperature1, obj.humidity1, obj.light1);
 
@@ -357,15 +366,31 @@ function updateSensorReadings(jsonResponse, obj) {
   );
 }
 
-function updateBoxes(temperature1, humidity1, light1) {
+function updateBoxes(temperature1, humidity1, light1, button1, button2, button3) {
   let temperatureDiv = document.getElementById("temperature1");
   let humidityDiv = document.getElementById("humidity1");
   let lightDiv = document.getElementById("light1");
-
+  let button1Div = document.getElementById("lightSwitch11");
+  let button2Div = document.getElementById("lightSwitch12");
+  let button3Div = document.getElementById("fanSwitch1");
   temperatureDiv.innerHTML = temperature1 + " °C";
   humidityDiv.innerHTML = humidity1 + " %";
   lightDiv.innerHTML = light1 + " Lux";
-
+  if (button1 == 1) {
+    button1Div.innerHTML = "ON";
+  } else {
+    button1Div.innerHTML = "OFF";
+  }
+  if (button2 == 1) {
+    button2Div.innerHTML = "ON";
+  } else {
+    button2Div.innerHTML = "OFF";
+  }
+  if (button3 == 1) {
+    button3Div.innerHTML = "ON";
+  } else {
+    button3Div.innerHTML = "OFF";
+  }
 }
 
 
@@ -480,7 +505,10 @@ function onConnect(message) {
 let obj = {
   temperature1: 0,
   humidity1: 0,
-  light1: 0
+  light1: 0,
+  button1: 0,
+  button2: 0,
+  button3: 0
 }
 function onMessage(topic, message) {
   var stringResponse = message.toString();
@@ -533,40 +561,18 @@ const bulb11 = document.getElementById("bulb11");
 const lightSwitch11 = document.getElementById("lightSwitch11");
 lightSwitch11.innerText = "OFF";
 
-// // Function to update the light status
-// function updateLightStatus(value) {
-//   if (value === 1) {
-//     lightSwitch11.innerText = "ON";
-//     bulb11.checked = true;
-//   } else {
-//     lightSwitch11.innerText = "OFF";
-//     bulb11.checked = false;
-//   }
-// }
-
 bulb11.addEventListener("change", function () {
   if (this.checked) {
     // Nếu công tắc được bật
     lightSwitch11.innerText = "ON";
     mqttService.publish("device/light11", '1');
+    
   } else {
     // Nếu công tắc được tắt
     lightSwitch11.innerText = "OFF";
     mqttService.publish("device/light11", '0');
   }
 });
-
-// // MQTT message handler
-// mqttService.onMessage(function (topic, payload) {
-//   if (topic === "device/light11") {
-//     const message = JSON.parse(payload);
-
-//     // Check if the received message is for Light11
-//     if (message.device_id === "ROOM101" && message.type === "Light11") {
-//       updateLightStatus(message.value);
-//     }
-//   }
-// });
 
 //Light 12
 const bulb12 = document.getElementById("bulb12");
