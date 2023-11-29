@@ -314,55 +314,60 @@ let MAX_GRAPH_POINTS = 12;
 let ctr = 0;
 
 // Callback function that will retrieve our latest sensor readings and redraw our Gauge with the latest readings
-function updateSensorReadings(jsonResponse, obj) {
+function updateSensorReadings(jsonResponse) {
+  let obj2 = {
+    ...obj
+  }
   console.log(typeof jsonResponse);
   console.log(jsonResponse);
 
   if (jsonResponse.type == "Temperature") {
-    obj.temperature1 = Number(jsonResponse.value).toFixed(2);
+    obj2["temperature1"] = Number(jsonResponse.value).toFixed(2);
   }
   if (jsonResponse.type == "Humidity") {
-    obj.humidity1 = Number(jsonResponse.value).toFixed(2);
+    obj2["humidity1"] = Number(jsonResponse.value).toFixed(2);
   }
   if (jsonResponse.type == "Light_Intensity") {
-    obj.light1 = Number(jsonResponse.value).toFixed(2);
+    obj2["light1"] = Number(jsonResponse.value).toFixed(2);
   }
   if (jsonResponse.type == "Light11") {
-    obj.button1 = Number(jsonResponse.value);
+    obj2["button1"] = Number(jsonResponse.value);
   }
   if (jsonResponse.type == "Light12") {
-    obj.button2 = Number(jsonResponse.value);
+    obj2["button2"] = Number(jsonResponse.value);
   }
   if (jsonResponse.type == "Fan1") {
-    obj.button3 = Number(jsonResponse.value);
+    obj2["button3"] = Number(jsonResponse.value);
   }
 
-  updateBoxes(obj.temperature1, obj.humidity1, obj.light1, obj.button1, obj.button2, obj. button3);
+  obj = obj2;
 
-  updateGauge(obj.temperature1, obj.humidity1, obj.light1);
+  updateBoxes(obj2["temperature1"], obj2["humidity1"], obj2["light1"], obj2["button1"], obj2["button2"], obj2["button3"]);
 
-  updateGauge(obj.temperature1, obj.humidity1, obj.light1);
+  updateGauge(obj2["temperature1"], obj2["humidity1"], obj2["light1"]);
+
+  updateGauge(obj2["temperature1"], obj2["humidity1"], obj2["light1"]);
 
   // Update Temperature Line Chart
   updateCharts(
     temperatureHistoryDiv,
     newTempXArray,
     newTempYArray,
-    obj.temperature1
+    obj2["temperature1"]
   );
   // Update Humidity Line Chart
   updateCharts(
     humidityHistoryDiv,
     newHumidityXArray,
     newHumidityYArray,
-    obj.humidity1
+    obj2["humidity1"]
   );
   // Update Light_Intensity Line Chart
   updateCharts(
     lightHistoryDiv,
     newLightXArray,
     newLightYArray,
-    obj.light1
+    obj2["light1"]
   );
 }
 
@@ -376,19 +381,19 @@ function updateBoxes(temperature1, humidity1, light1, button1, button2, button3)
   temperatureDiv.innerHTML = temperature1 + " °C";
   humidityDiv.innerHTML = humidity1 + " %";
   lightDiv.innerHTML = light1 + " Lux";
-  if (button1 == 1) {
+  if (button1 === 1) {
     button1Div.innerHTML = "ON";
-  } else {
+  } else if(button1 === 0){
     button1Div.innerHTML = "OFF";
   }
-  if (button2 == 1) {
+  if (button2 === 1) {
     button2Div.innerHTML = "ON";
-  } else {
+  } else if(button2 === 0) {
     button2Div.innerHTML = "OFF";
   }
-  if (button3 == 1) {
+  if (button3 === 1) {
     button3Div.innerHTML = "ON";
-  } else {
+  } else if(button3 === 0) {
     button3Div.innerHTML = "OFF";
   }
 }
@@ -510,6 +515,7 @@ let obj = {
   button2: 0,
   button3: 0
 }
+
 function onMessage(topic, message) {
   var stringResponse = message.toString();
   var messageResponse = JSON.parse(stringResponse);
@@ -614,9 +620,11 @@ ModeSwitch.addEventListener("change", function () {
   if (this.checked) {
     // Nếu công tắc được bật
     ModeSwitch1.innerText = "Auto";
+    mqttService.publish("Auto_Mode", '1');
   } else {
     // Nếu công tắc được tắt
     ModeSwitch1.innerText = "Manual";
+    mqttService.publish("Auto_Mode", '0');
   }
 });
 

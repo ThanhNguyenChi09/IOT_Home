@@ -310,59 +310,88 @@ let MAX_GRAPH_POINTS = 12;
 let ctr = 0;
 
 // Callback function that will retrieve our latest sensor readings and redraw our Gauge with the latest readings
-function updateSensorReadings(jsonResponse, obj) {
+function updateSensorReadings(jsonResponse) {
+  let obj2 = {
+    ...obj
+  }
   console.log(typeof jsonResponse);
   console.log(jsonResponse);
 
   if (jsonResponse.type == "Temperature") {
-    obj.temperature2 = Number(jsonResponse.value).toFixed(2);
+    obj2["temperature2"] = Number(jsonResponse.value).toFixed(2);
   }
   if (jsonResponse.type == "Humidity") {
-    obj.humidity2 = Number(jsonResponse.value).toFixed(2);
+    obj2["humidity2"] = Number(jsonResponse.value).toFixed(2);
   }
   if (jsonResponse.type == "Light_Intensity") {
-    obj.light2 = Number(jsonResponse.value).toFixed(2);
+    obj2["light2"] = Number(jsonResponse.value).toFixed(2);
+  }
+  if (jsonResponse.type == "Light21") {
+    obj2["button1"] = Number(jsonResponse.value);
+  }
+  if (jsonResponse.type == "Light22") {
+    obj2["button2"] = Number(jsonResponse.value);
+  }
+  if (jsonResponse.type == "Fan2") {
+    obj2["button3"] = Number(jsonResponse.value);
   }
 
+  obj = obj2;
+  updateBoxes(obj2["temperature2"], obj2["humidity2"], obj2["light2"], obj2["button1"], obj2["button2"], obj2["button3"]);
 
+  updateGauge(obj2["temperature2"], obj2["humidity2"], obj2["light2"]);
 
-  updateBoxes(obj.temperature2, obj.humidity2, obj.light2);
-
-  updateGauge(obj.temperature2, obj.humidity2, obj.light2);
-
-  updateGauge(obj.temperature2, obj.humidity2, obj.light2);
+  updateGauge(obj2["temperature2"], obj2["humidity2"], obj2["light2"]);
 
   // Update Temperature Line Chart
   updateCharts(
     temperatureHistoryDiv,
     newTempXArray,
     newTempYArray,
-    obj.temperature2
+    obj2["temperature2"]
   );
   // Update Humidity Line Chart
   updateCharts(
     humidityHistoryDiv,
     newHumidityXArray,
     newHumidityYArray,
-    obj.humidity2
+    obj2["humidity2"]
   );
   // Update Light_Intensity Line Chart
   updateCharts(
     lightHistoryDiv,
     newLightXArray,
     newLightYArray,
-    obj.light2
+    obj2["light2"]
   );
 }
 
-function updateBoxes(temperature2, humidity2, light2) {
+function updateBoxes(temperature2, humidity2, light2, button1, button2, button3) {
   let temperatureDiv = document.getElementById("temperature2");
   let humidityDiv = document.getElementById("humidity2");
   let lightDiv = document.getElementById("light2");
+  let button1Div = document.getElementById("lightSwitch21");
+  let button2Div = document.getElementById("lightSwitch22");
+  let button3Div = document.getElementById("fanSwitch2");
 
   temperatureDiv.innerHTML = temperature2 + " °C";
   humidityDiv.innerHTML = humidity2 + " %";
   lightDiv.innerHTML = light2 + " Lux";
+  if (button1 === 1) {
+    button1Div.innerHTML = "ON";
+  } else if(button1 === 0){
+    button1Div.innerHTML = "OFF";
+  }
+  if (button2 === 1) {
+    button2Div.innerHTML = "ON";
+  } else if(button2 === 0) {
+    button2Div.innerHTML = "OFF";
+  }
+  if (button3 === 1) {
+    button3Div.innerHTML = "ON";
+  } else if(button3 === 0) {
+    button3Div.innerHTML = "OFF";
+  }
 
 }
 
@@ -477,7 +506,10 @@ function onConnect(message) {
 let obj = {
   temperature2: 0,
   humidity2: 0,
-  light2: 0
+  light2: 0,
+  button1: 0,
+  button2: 0,
+  button3: 0
 }
 function onMessage(topic, message) {
   var stringResponse = message.toString();
@@ -571,5 +603,21 @@ fan2.addEventListener("change", function () {
     // Nếu công tắc được tắt
     fanSwitch2.innerText = "OFF";
     mqttService.publish("device/fan2", '0');
+  }
+});
+
+//Mode Switch
+const ModeSwitch1 = document.getElementById("ModeSwitch1");
+const ModeSwitch = document.getElementById("ModeSwitch");
+ModeSwitch1.innerText = "Manual";
+ModeSwitch.addEventListener("change", function () {
+  if (this.checked) {
+    // Nếu công tắc được bật
+    ModeSwitch1.innerText = "Auto";
+    mqttService.publish("Auto_Mode2", '1');
+  } else {
+    // Nếu công tắc được tắt
+    ModeSwitch1.innerText = "Manual";
+    mqttService.publish("Auto_Mode2", '0');
   }
 });
